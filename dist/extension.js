@@ -37,20 +37,20 @@ module.exports = __toCommonJS(extension_exports);
 var vscode = __toESM(require("vscode"));
 var fs = __toESM(require("fs"));
 var path = __toESM(require("path"));
-async function getClassesFromHTML(folderPath) {
+async function getClassesFromFiles(folderPath) {
   const classes = [];
   const files = fs.readdirSync(folderPath);
   for (const file of files) {
     const filePath = path.join(folderPath, file);
     if (fs.statSync(filePath).isDirectory()) {
-      const subClasses = await getClassesFromHTML(filePath);
+      const subClasses = await getClassesFromFiles(filePath);
       classes.push(...subClasses);
-    } else if (file.endsWith(".html")) {
+    } else if (file.endsWith(".html") || file.endsWith(".jsx") || file.endsWith(".js")) {
       const content = fs.readFileSync(filePath, "utf-8");
-      const classMatches = content.match(/class=["']([^"']+)["']/g);
+      const classMatches = content.match(/class=["']([^"']+)["']/g) || content.match(/className=["']([^"']+)["']/g);
       if (classMatches) {
         classMatches.forEach((match) => {
-          const classList = match.replace(/class=["']/g, "").replace(/["']/g, "").split(" ");
+          const classList = match.replace(/class=["']/g, "").replace(/className=["']/g, "").replace(/["']/g, "").split(" ");
           classes.push(...classList);
         });
       }
@@ -65,7 +65,7 @@ async function activate(context) {
     return;
   }
   const folderPath = workspaceFolders[0].uri.fsPath;
-  let classes = await getClassesFromHTML(folderPath);
+  let classes = await getClassesFromFiles(folderPath);
   console.log("Clases encontradas:", classes);
   const provider = vscode.languages.registerCompletionItemProvider(
     { scheme: "file", language: "*" },
@@ -103,8 +103,8 @@ async function activate(context) {
   const docChangeListener = vscode.workspace.onDidChangeTextDocument(
     async (event) => {
       const document = event.document;
-      if (document.languageId === "html") {
-        classes = await getClassesFromHTML(folderPath);
+      if (document.languageId === "html" || document.languageId === "javascriptreact") {
+        classes = await getClassesFromFiles(folderPath);
         console.log("Clases actualizadas:", classes);
       }
     }
