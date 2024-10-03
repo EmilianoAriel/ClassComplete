@@ -39,24 +39,38 @@ var fs = __toESM(require("fs"));
 var path = __toESM(require("path"));
 async function getClassesFromFiles(folderPath) {
   const classes = [];
+  const includeHtml = vscode.workspace.getConfiguration().get("fileFilter.includeHtml", true);
+  const includeJsx = vscode.workspace.getConfiguration().get("fileFilter.includeJsx", true);
+  const includeJs = vscode.workspace.getConfiguration().get("fileFilter.includeJs", true);
+  const fileTypes = [
+    { extension: ".html", include: includeHtml },
+    { extension: ".jsx", include: includeJsx },
+    { extension: ".js", include: includeJs }
+  ];
   const files = fs.readdirSync(folderPath);
   for (const file of files) {
     const filePath = path.join(folderPath, file);
     if (fs.statSync(filePath).isDirectory()) {
       const subClasses = await getClassesFromFiles(filePath);
       classes.push(...subClasses);
-    } else if (file.endsWith(".html") || file.endsWith(".jsx") || file.endsWith(".js")) {
-      const content = fs.readFileSync(filePath, "utf-8");
-      const classMatches = content.match(/class=["']([^"']+)["']/g) || content.match(/className=["']([^"']+)["']/g);
-      if (classMatches) {
-        classMatches.forEach((match) => {
-          const classList = match.replace(/class=["']/g, "").replace(/className=["']/g, "").replace(/["']/g, "").split(" ");
-          classes.push(...classList);
-        });
+    } else {
+      const matchedFileType = fileTypes.find(
+        (ft) => file.endsWith(ft.extension) && ft.include
+      );
+      if (matchedFileType) {
+        const content = fs.readFileSync(filePath, "utf-8");
+        const classMatches = content.match(/class=["']([^"']+)["']/g) || content.match(/className=["']([^"']+)["']/g);
+        if (classMatches) {
+          classMatches.forEach((match) => {
+            const classList = match.replace(/class=["']/g, "").replace(/className=["']/g, "").replace(/["']/g, "").split(" ");
+            classes.push(...classList);
+          });
+        }
       }
     }
   }
-  return classes;
+  const uniqueClasses = Array.from(new Set(classes));
+  return uniqueClasses;
 }
 async function activate(context) {
   const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -69,7 +83,6 @@ async function activate(context) {
   console.log("Clases encontradas:", classes);
   const provider = vscode.languages.registerCompletionItemProvider(
     { scheme: "file", language: "*" },
-    // Funciona en todos los lenguajes
     {
       provideCompletionItems(document, position, token, context2) {
         const completionItems = [];
@@ -97,7 +110,6 @@ async function activate(context) {
       }
     },
     "*"
-    // El activador es "*"
   );
   context.subscriptions.push(provider);
   const docChangeListener = vscode.workspace.onDidChangeTextDocument(

@@ -1,71 +1,54 @@
-# class-complete README
+# Auto Class Complete README
 
-This is the README for your extension "class-complete". After writing up a brief description, we recommend including the following sections.
+Auto Class Complete es una extensión diseñada para optimizar tu flujo de trabajo en desarrollo web, permitiéndote autocompletar clases CSS directamente desde archivos HTML y JSX. Esta herramienta te ayuda a evitar errores tipográficos al sugerir automáticamente las clases disponibles en tu proyecto, eliminando la necesidad de alternar entre archivos para verificar nombres de clases.
 
-## Features
+## Características
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Autocompletado Eficiente
 
-For example if there is an image subfolder under your extension project workspace:
+Detecta y sugiere clases CSS de tus archivos HTML y JSX mientras escribes, lo que te permite seleccionar fácilmente las clases correctas sin interrupciones en tu flujo de trabajo.
 
-\!\[feature X\]\(images/feature-x.png\)
+### Soporte para Varios Tipos de Archivos
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Funciona con archivos .html, .jsx y .js, facilitando el desarrollo en proyectos que utilizan React y otros frameworks basados en JavaScript.
 
-## Requirements
+### Minimización de Errores Tipográficos
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Reduce significativamente los errores tipográficos al proporcionar sugerencias de autocompletado precisas, lo que mejora la calidad del código y la eficiencia del desarrollo.
 
-## Extension Settings
+### Configuración Personalizada
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Ofrece opciones para personalizar qué tipos de archivos deseas incluir en el autocompletado a través de la configuración de la extensión.
 
-For example:
+## Cómo Funciona
 
-This extension contributes the following settings:
+### Instalación
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Descarga Auto Class Complete desde el Marketplace de Visual Studio o Visual Studio Code.
 
-## Known Issues
+### Uso
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Al escribir una asterisco (\*) en un archivo CSS, se mostrará una lista de sugerencias de clases CSS basadas en los archivos HTML y JSX del proyecto. Simplemente selecciona la clase deseada y continúa con tu trabajo.
 
-## Release Notes
+### Configuración
 
-Users appreciate release notes as you update your extension.
+Personaliza la extensión desde la configuración del editor para incluir solo los tipos de archivos que necesitas.
 
-### 1.0.0
+## Ejemplo de Uso
 
-Initial release of ...
+A continuación, se muestra un ejemplo visual de cómo Auto Class Complete facilita el autocompletado de clases CSS:
 
-### 1.0.1
+![Ejemplo de Uso](./Fotos/image.png) <!-- Reemplaza la ruta de la imagen según sea necesario -->
 
-Fixed issue #.
+## Contribuciones
 
-### 1.1.0
+Si deseas contribuir al desarrollo de Auto Class Complete, no dudes en abrir un problema o enviar un pull request en nuestro repositorio de GitHub.
 
-Added features X, Y, and Z.
+## Requisitos
 
----
+- Visual Studio o Visual Studio Code (versión compatible).
+- Archivos HTML y JSX disponibles en el proyecto.
 
-## Following extension guidelines
+## Contacto
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Para preguntas, comentarios o soporte, puedes contactarnos en [emilianoariel6@gmail.com].
