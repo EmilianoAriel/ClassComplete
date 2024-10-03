@@ -1,9 +1,4 @@
-# Change Log
+## [1.0.0] - 2024-10-02
 
-All notable changes to the "class-complete" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- Lanzamiento inicial de Auto Class Complete.
+- Funcionalidad básica de autocompletado de clases CSS a partir de archivos HTML y JSX.

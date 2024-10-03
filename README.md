@@ -38,7 +38,7 @@ Personaliza la extensión desde la configuración del editor para incluir solo l
 
 A continuación, se muestra un ejemplo visual de cómo Auto Class Complete facilita el autocompletado de clases CSS:
 
-![Ejemplo de Uso](./Fotos/image.png) <!-- Reemplaza la ruta de la imagen según sea necesario -->
+![Ejemplo de Uso](./Fotos/image.png)
 
 ## Contribuciones
 
