@@ -1,54 +1,54 @@
 # Auto Class Complete README
 
-Auto Class Complete es una extensión diseñada para optimizar tu flujo de trabajo en desarrollo web, permitiéndote autocompletar clases CSS directamente desde archivos HTML y JSX. Esta herramienta te ayuda a evitar errores tipográficos al sugerir automáticamente las clases disponibles en tu proyecto, eliminando la necesidad de alternar entre archivos para verificar nombres de clases.
+Auto Class Complete is an extension designed to optimize your web development workflow by allowing you to autocomplete CSS classes directly from HTML and JSX files. This tool helps you avoid typos by automatically suggesting the available classes in your project, eliminating the need to switch between files to check class names.
 
-## Características
+## Features
 
-### Autocompletado Eficiente
+### Efficient Autocomplete
 
-Detecta y sugiere clases CSS de tus archivos HTML y JSX mientras escribes, lo que te permite seleccionar fácilmente las clases correctas sin interrupciones en tu flujo de trabajo.
+It detects and suggests CSS classes from your HTML and JSX files as you type, allowing you to easily select the correct classes without interruptions to your workflow.
 
-### Soporte para Varios Tipos de Archivos
+### Support for Multiple File Types
 
-Funciona con archivos .html, .jsx y .js, facilitando el desarrollo en proyectos que utilizan React y otros frameworks basados en JavaScript.
+It works with .html, .jsx, and .js files, making it easier to develop projects using React and other JavaScript-based frameworks.
 
-### Minimización de Errores Tipográficos
+### Minimized Typographical Errors
 
-Reduce significativamente los errores tipográficos al proporcionar sugerencias de autocompletado precisas, lo que mejora la calidad del código y la eficiencia del desarrollo.
+It significantly reduces typos by providing accurate autocomplete suggestions, improving code quality and development efficiency.
 
-### Configuración Personalizada
+### Customizable Configuration
 
-Ofrece opciones para personalizar qué tipos de archivos deseas incluir en el autocompletado a través de la configuración de la extensión.
+It offers options to customize which types of files you want to include in the autocomplete through the extension's settings.
 
-## Cómo Funciona
+## How It Works
 
-### Instalación
+### Installation
 
-Descarga Auto Class Complete desde el Marketplace de Visual Studio o Visual Studio Code.
+Download Auto Class Complete from the Visual Studio or Visual Studio Code Marketplace.
 
-### Uso
+### Usage
 
-Al escribir una asterisco (\*) en un archivo CSS, se mostrará una lista de sugerencias de clases CSS basadas en los archivos HTML y JSX del proyecto. Simplemente selecciona la clase deseada y continúa con tu trabajo.
+When typing an asterisk (\*) in a CSS file, a list of CSS class suggestions based on the project's HTML and JSX files will appear. Simply select the desired class and continue working.
 
-### Configuración
+### Configuration
 
-Personaliza la extensión desde la configuración del editor para incluir solo los tipos de archivos que necesitas.
+Customize the extension from the editor settings to include only the file types you need.
 
-## Ejemplo de Uso
+## Example Usage
 
-A continuación, se muestra un ejemplo visual de cómo Auto Class Complete facilita el autocompletado de clases CSS:
+Below is a visual example of how Auto Class Complete facilitates CSS class autocomplete:
 
-![Ejemplo de Uso](/Fotos/image.png)
+![Usage Example](./Fotos/image.png)
 
-## Contribuciones
+## Contributions
 
-Si deseas contribuir al desarrollo de Auto Class Complete, no dudes en abrir un problema o enviar un pull request en nuestro repositorio de GitHub.
+If you want to contribute to the development of Auto Class Complete, feel free to open an issue or submit a pull request on our GitHub repository.
 
-## Requisitos
+## Requirements
 
-- Visual Studio o Visual Studio Code (versión compatible).
-- Archivos HTML y JSX disponibles en el proyecto.
+- Visual Studio or Visual Studio Code (compatible version).
+- HTML and JSX files available in the project.
 
-## Contacto
+## Contact
 
-Para preguntas, comentarios o soporte, puedes contactarnos en [emilianoariel6@gmail.com].
+For questions, comments, or support, you can contact us at [emilianoariel6@gmail.com].

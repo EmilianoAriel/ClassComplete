@@ -11,14 +11,10 @@ async function getClassesFromFiles(folderPath: string): Promise<string[]> {
   const includeJsx = vscode.workspace
     .getConfiguration()
     .get<boolean>("fileFilter.includeJsx", true);
-  const includeJs = vscode.workspace
-    .getConfiguration()
-    .get<boolean>("fileFilter.includeJs", true);
 
   const fileTypes: { extension: string; include: boolean }[] = [
     { extension: ".html", include: includeHtml },
     { extension: ".jsx", include: includeJsx },
-    { extension: ".js", include: includeJs },
   ];
 
   const files = fs.readdirSync(folderPath);
@@ -68,7 +64,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const folderPath = workspaceFolders[0].uri.fsPath;
   let classes = await getClassesFromFiles(folderPath);
-  console.log("Clases encontradas:", classes);
 
   const provider = vscode.languages.registerCompletionItemProvider(
     { scheme: "file", language: "*" },
@@ -123,7 +118,6 @@ export async function activate(context: vscode.ExtensionContext) {
         document.languageId === "javascriptreact"
       ) {
         classes = await getClassesFromFiles(folderPath);
-        console.log("Clases actualizadas:", classes);
       }
     }
   );

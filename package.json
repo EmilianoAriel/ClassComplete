@@ -2,8 +2,9 @@
   "name": "class-complete",
   "displayName": "Auto Class Complete",
   "description": "Una extension para autocompletar en CSS con las clases de tus archivos HTML ,JSX",
-  "version": "0.0.1",
-  "icon": "LogoExtension.jpg",
+  "version": "0.0.2",
+  "icon": "LogoExtencion.jpg",
+  "publisher": "EmilianoFigueroa",
   "engines": {
     "vscode": "^1.93.0"
   },
@@ -18,10 +19,6 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "class-complete.helloWorld",
-        "title": "Hello World"
-      },
       {
         "command": "class-complete.mostrarContenidoClases",
         "title": "Mostrar Contenido de Clases"
@@ -47,16 +44,6 @@
           "HTML",
           "html"
         ]
-      },
-      {
-        "id": "javascript",
-        "extensions": [
-          ".js"
-        ],
-        "aliases": [
-          "JavaScript",
-          "js"
-        ]
       }
     ],
     "configuration": {
@@ -72,11 +59,6 @@
           "type": "boolean",
           "default": true,
           "description": "Incluir archivos JSX en la búsqueda de clases."
-        },
-        "fileFilter.includeJs": {
-          "type": "boolean",
-          "default": true,
-          "description": "Incluir archivos JavaScript en la búsqueda de clases."
         }
       }
     }
