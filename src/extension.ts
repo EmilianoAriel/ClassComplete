@@ -66,7 +66,7 @@ export async function activate(context: vscode.ExtensionContext) {
   let classes = await getClassesFromFiles(folderPath);
 
   const provider = vscode.languages.registerCompletionItemProvider(
-    { scheme: "file", language: "*" },
+    { scheme: "file", language: "css" },
     {
       provideCompletionItems(
         document: vscode.TextDocument,

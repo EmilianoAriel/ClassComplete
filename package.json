@@ -12,9 +12,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:css",
-    "onLanguage:html",
-    "onLanguage:javascript"
+    "onLanguage:css"
   ],
   "main": "./dist/extension.js",
   "contributes": {
