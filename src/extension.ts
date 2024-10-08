@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import * as fs from "fs";
+import { promises as fsPromises } from "fs";
 import * as path from "path";
 
 async function getClassesFromFiles(folderPath: string): Promise<string[]> {
@@ -17,27 +17,28 @@ async function getClassesFromFiles(folderPath: string): Promise<string[]> {
     { extension: ".jsx", include: includeJsx },
   ];
 
-  const files = fs.readdirSync(folderPath);
+  const files = await fsPromises.readdir(folderPath);
 
   for (const file of files) {
     const filePath = path.join(folderPath, file);
+    const stats = await fsPromises.stat(filePath);
 
-    if (fs.statSync(filePath).isDirectory()) {
+    if (stats.isDirectory()) {
       const subClasses = await getClassesFromFiles(filePath);
       classes.push(...subClasses);
     } else {
       const matchedFileType = fileTypes.find(
-        ft => file.endsWith(ft.extension) && ft.include
+        (ft) => file.endsWith(ft.extension) && ft.include
       );
 
       if (matchedFileType) {
-        const content = fs.readFileSync(filePath, "utf-8");
+        const content = await fsPromises.readFile(filePath, "utf-8");
         const classMatches =
           content.match(/class=["']([^"']+)["']/g) ||
           content.match(/className=["']([^"']+)["']/g);
 
         if (classMatches) {
-          classMatches.forEach(match => {
+          classMatches.forEach((match) => {
             const classList = match
               .replace(/class=["']/g, "")
               .replace(/className=["']/g, "")
@@ -50,8 +51,7 @@ async function getClassesFromFiles(folderPath: string): Promise<string[]> {
     }
   }
 
-  const uniqueClasses = Array.from(new Set(classes));
-  return uniqueClasses;
+  return Array.from(new Set(classes));
 }
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -81,7 +81,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
         if (linePrefix.endsWith("*")) {
           completionItems.push(
-            ...classes.map(className => {
+            ...classes.map((className) => {
               const completionItem = new vscode.CompletionItem(
                 className,
                 vscode.CompletionItemKind.Class
@@ -109,20 +109,18 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(provider);
 
-  const docChangeListener = vscode.workspace.onDidChangeTextDocument(
-    async event => {
-      const document = event.document;
+  const saveListener = vscode.workspace.onWillSaveTextDocument(async (event) => {
+    const document = event.document;
 
-      if (
-        document.languageId === "html" ||
-        document.languageId === "javascriptreact"
-      ) {
-        classes = await getClassesFromFiles(folderPath);
-      }
+    if (
+      document.languageId === "html" ||
+      document.languageId === "javascriptreact"
+    ) {
+      classes = await getClassesFromFiles(folderPath);
     }
-  );
+  });
 
-  context.subscriptions.push(docChangeListener);
+  context.subscriptions.push(saveListener);
 }
 
 export function deactivate() {}
