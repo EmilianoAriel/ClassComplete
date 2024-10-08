@@ -2,7 +2,7 @@
   "name": "class-complete",
   "displayName": "Auto Class Complete",
   "description": "Una extension para autocompletar en CSS con las clases de tus archivos HTML ,JSX",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "LogoExtencion.jpg",
   "publisher": "EmilianoFigueroa",
   "engines": {
