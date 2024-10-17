@@ -1,1 +1,129 @@
-"use strict";var F=Object.create;var m=Object.defineProperty;var I=Object.getOwnPropertyDescriptor;var T=Object.getOwnPropertyNames;var k=Object.getPrototypeOf,P=Object.prototype.hasOwnProperty;var b=(e,t)=>{for(var o in t)m(e,o,{get:t[o],enumerable:!0})},h=(e,t,o,a)=>{if(t&&typeof t=="object"||typeof t=="function")for(let i of T(t))!P.call(e,i)&&i!==o&&m(e,i,{get:()=>t[i],enumerable:!(a=I(t,i))||a.enumerable});return e};var x=(e,t,o)=>(o=e!=null?F(k(e)):{},h(t||!e||!e.__esModule?m(o,"default",{value:e,enumerable:!0}):o,e)),j=e=>h(m({},"__esModule",{value:!0}),e);var W={};b(W,{activate:()=>E,deactivate:()=>D});module.exports=j(W);var s=x(require("vscode")),p=require("fs"),w=x(require("path"));async function v(e){let t=[],o=s.workspace.getConfiguration().get("fileFilter.includeHtml",!0),a=s.workspace.getConfiguration().get("fileFilter.includeJsx",!0),i=[{extension:".html",include:o},{extension:".jsx",include:a}],u=await p.promises.readdir(e);for(let r of u){let n=w.join(e,r);if((await p.promises.stat(n)).isDirectory()){let f=await v(n);t.push(...f)}else if(i.find(c=>r.endsWith(c.extension)&&c.include)){let c=await p.promises.readFile(n,"utf-8"),g=c.match(/class=["']([^"']+)["']/g)||c.match(/className=["']([^"']+)["']/g);g&&g.forEach(d=>{let l=d.replace(/class=["']/g,"").replace(/className=["']/g,"").replace(/["']/g,"").split(" ");t.push(...l)})}}return Array.from(new Set(t))}async function E(e){let t=s.workspace.workspaceFolders;if(!t){console.error("No hay carpetas en el espacio de trabajo.");return}let o=t[0].uri.fsPath,a=await v(o),i=s.languages.registerCompletionItemProvider({scheme:"file",language:"css"},{provideCompletionItems(r,n,C,f){let c=[];return r.lineAt(n).text.slice(0,n.character).endsWith("*")&&c.push(...a.map(d=>{let l=new s.CompletionItem(d,s.CompletionItemKind.Class);l.insertText=d;let y=new s.Range(n.translate(0,-1),n);return l.additionalTextEdits=[s.TextEdit.delete(y)],l})),c.length?c:void 0}},"*");e.subscriptions.push(i);let u=s.workspace.onWillSaveTextDocument(async r=>{let n=r.document;(n.languageId==="html"||n.languageId==="javascriptreact")&&(a=await v(o))});e.subscriptions.push(u)}function D(){}0&&(module.exports={activate,deactivate});
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/extension.ts
+var extension_exports = {};
+__export(extension_exports, {
+  activate: () => activate,
+  deactivate: () => deactivate
+});
+module.exports = __toCommonJS(extension_exports);
+var vscode = __toESM(require("vscode"));
+var import_fs = require("fs");
+var path = __toESM(require("path"));
+async function getClassesFromFiles(folderPath) {
+  const classes = [];
+  const includeHtml = vscode.workspace.getConfiguration().get("fileFilter.includeHtml", true);
+  const includeJsx = vscode.workspace.getConfiguration().get("fileFilter.includeJsx", true);
+  const fileTypes = [
+    { extension: ".html", include: includeHtml },
+    { extension: ".jsx", include: includeJsx }
+  ];
+  const files = await import_fs.promises.readdir(folderPath);
+  for (const file of files) {
+    const filePath = path.join(folderPath, file);
+    const stats = await import_fs.promises.stat(filePath);
+    if (stats.isDirectory()) {
+      const subClasses = await getClassesFromFiles(filePath);
+      classes.push(...subClasses);
+    } else {
+      const matchedFileType = fileTypes.find(
+        (ft) => file.endsWith(ft.extension) && ft.include
+      );
+      if (matchedFileType) {
+        const content = await import_fs.promises.readFile(filePath, "utf-8");
+        const classMatches = content.match(/class=["']([^"']+)["']/g) || content.match(/className=["']([^"']+)["']/g);
+        if (classMatches) {
+          classMatches.forEach((match) => {
+            const classList = match.replace(/class=["']/g, "").replace(/className=["']/g, "").replace(/["']/g, "").split(" ");
+            classes.push(...classList);
+          });
+        }
+      }
+    }
+  }
+  return Array.from(new Set(classes));
+}
+async function activate(context) {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (!workspaceFolders) {
+    console.error("No hay carpetas en el espacio de trabajo.");
+    return;
+  }
+  const folderPath = workspaceFolders[0].uri.fsPath;
+  let classes = await getClassesFromFiles(folderPath);
+  const provider = vscode.languages.registerCompletionItemProvider(
+    { scheme: "file", language: "css" },
+    {
+      provideCompletionItems(document, position, token, context2) {
+        const completionItems = [];
+        const linePrefix = document.lineAt(position).text.slice(0, position.character);
+        if (linePrefix.endsWith("*")) {
+          completionItems.push(
+            ...classes.map((className) => {
+              const completionItem = new vscode.CompletionItem(
+                className,
+                vscode.CompletionItemKind.Class
+              );
+              completionItem.insertText = `.${className}`;
+              const editRange = new vscode.Range(
+                position.translate(0, -1),
+                position
+              );
+              completionItem.additionalTextEdits = [
+                vscode.TextEdit.delete(editRange)
+              ];
+              return completionItem;
+            })
+          );
+        }
+        return completionItems.length ? completionItems : void 0;
+      }
+    },
+    "*"
+  );
+  context.subscriptions.push(provider);
+  const saveListener = vscode.workspace.onWillSaveTextDocument(
+    async (event) => {
+      const document = event.document;
+      if (document.languageId === "html" || document.languageId === "javascriptreact") {
+        classes = await getClassesFromFiles(folderPath);
+      }
+    }
+  );
+  context.subscriptions.push(saveListener);
+}
+function deactivate() {
+}
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  activate,
+  deactivate
+});
+//# sourceMappingURL=extension.js.map

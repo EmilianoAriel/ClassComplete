@@ -1,20 +1,20 @@
-import * as vscode from "vscode";
-import { promises as fsPromises } from "fs";
-import * as path from "path";
+import * as vscode from 'vscode';
+import { promises as fsPromises } from 'fs';
+import * as path from 'path';
 
 async function getClassesFromFiles(folderPath: string): Promise<string[]> {
   const classes: string[] = [];
 
   const includeHtml = vscode.workspace
     .getConfiguration()
-    .get<boolean>("fileFilter.includeHtml", true);
+    .get<boolean>('fileFilter.includeHtml', true);
   const includeJsx = vscode.workspace
     .getConfiguration()
-    .get<boolean>("fileFilter.includeJsx", true);
+    .get<boolean>('fileFilter.includeJsx', true);
 
   const fileTypes: { extension: string; include: boolean }[] = [
-    { extension: ".html", include: includeHtml },
-    { extension: ".jsx", include: includeJsx },
+    { extension: '.html', include: includeHtml },
+    { extension: '.jsx', include: includeJsx },
   ];
 
   const files = await fsPromises.readdir(folderPath);
@@ -32,7 +32,7 @@ async function getClassesFromFiles(folderPath: string): Promise<string[]> {
       );
 
       if (matchedFileType) {
-        const content = await fsPromises.readFile(filePath, "utf-8");
+        const content = await fsPromises.readFile(filePath, 'utf-8');
         const classMatches =
           content.match(/class=["']([^"']+)["']/g) ||
           content.match(/className=["']([^"']+)["']/g);
@@ -40,10 +40,10 @@ async function getClassesFromFiles(folderPath: string): Promise<string[]> {
         if (classMatches) {
           classMatches.forEach((match) => {
             const classList = match
-              .replace(/class=["']/g, "")
-              .replace(/className=["']/g, "")
-              .replace(/["']/g, "")
-              .split(" ");
+              .replace(/class=["']/g, '')
+              .replace(/className=["']/g, '')
+              .replace(/["']/g, '')
+              .split(' ');
             classes.push(...classList);
           });
         }
@@ -58,7 +58,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const workspaceFolders = vscode.workspace.workspaceFolders;
 
   if (!workspaceFolders) {
-    console.error("No hay carpetas en el espacio de trabajo.");
+    console.error('No hay carpetas en el espacio de trabajo.');
     return;
   }
 
@@ -66,7 +66,7 @@ export async function activate(context: vscode.ExtensionContext) {
   let classes = await getClassesFromFiles(folderPath);
 
   const provider = vscode.languages.registerCompletionItemProvider(
-    { scheme: "file", language: "css" },
+    { scheme: 'file', language: 'css' },
     {
       provideCompletionItems(
         document: vscode.TextDocument,
@@ -79,14 +79,14 @@ export async function activate(context: vscode.ExtensionContext) {
           .lineAt(position)
           .text.slice(0, position.character);
 
-        if (linePrefix.endsWith("*")) {
+        if (linePrefix.endsWith('*')) {
           completionItems.push(
             ...classes.map((className) => {
               const completionItem = new vscode.CompletionItem(
                 className,
                 vscode.CompletionItemKind.Class
               );
-              completionItem.insertText = className;
+              completionItem.insertText = `.${className}`;
 
               const editRange = new vscode.Range(
                 position.translate(0, -1),
@@ -104,21 +104,23 @@ export async function activate(context: vscode.ExtensionContext) {
         return completionItems.length ? completionItems : undefined;
       },
     },
-    "*"
+    '*'
   );
 
   context.subscriptions.push(provider);
 
-  const saveListener = vscode.workspace.onWillSaveTextDocument(async (event) => {
-    const document = event.document;
+  const saveListener = vscode.workspace.onWillSaveTextDocument(
+    async (event) => {
+      const document = event.document;
 
-    if (
-      document.languageId === "html" ||
-      document.languageId === "javascriptreact"
-    ) {
-      classes = await getClassesFromFiles(folderPath);
+      if (
+        document.languageId === 'html' ||
+        document.languageId === 'javascriptreact'
+      ) {
+        classes = await getClassesFromFiles(folderPath);
+      }
     }
-  });
+  );
 
   context.subscriptions.push(saveListener);
 }
