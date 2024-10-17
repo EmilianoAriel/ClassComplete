@@ -3,7 +3,7 @@
   "displayName": "Auto Class Complete",
   "description": "Una extension para autocompletar en CSS con las clases de tus archivos HTML ,JSX",
   "version": "1.0.0",
-  "icon": "LogoExtencion.jpg",
+  "icon": "LogoExtencion.png",
   "publisher": "EmilianoFigueroa",
   "engines": {
     "vscode": "^1.93.0"
